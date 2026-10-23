@@ -12,7 +12,11 @@ export function heartPoints(count: number, scale = 1): { x: number; y: number }[
     const x = 16 * Math.pow(Math.sin(t), 3);
     const y =
       13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
-    points.push({ x: x * scale, y: -y * scale }); // flip y so the heart points down
+    // Round to 2 decimals so server and client render identical attributes.
+    points.push({
+      x: Math.round(x * scale * 100) / 100,
+      y: Math.round(-y * scale * 100) / 100,
+    });
   }
   return points;
 }
