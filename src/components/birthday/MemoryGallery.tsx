@@ -87,7 +87,7 @@ export default function MemoryGallery({ onContinue }: { onContinue: () => void }
 
       {/* Photo lightbox */}
       <AnimatePresence>
-        {lightboxIndex !== null && (
+        {lightboxIndex !== null && memories[lightboxIndex] && (
           <PhotoLightbox
             memory={memories[lightboxIndex]}
             position={lightboxIndex}
@@ -226,11 +226,13 @@ function PhotoLightbox({
       aria-modal="true"
       aria-label={`Memory: ${memory.title}`}
       onTouchStart={(e) => {
-        touchStart.current = e.touches[0].clientX;
+        touchStart.current = e.touches[0]?.clientX ?? null;
       }}
       onTouchEnd={(e) => {
-        if (touchStart.current === null) return;
-        const dx = e.changedTouches[0].clientX - touchStart.current;
+        const start = touchStart.current;
+        const endX = e.changedTouches[0]?.clientX;
+        if (start === null || endX === undefined) return;
+        const dx = endX - start;
         if (Math.abs(dx) > 48) onStep(dx > 0 ? -1 : 1);
         touchStart.current = null;
       }}

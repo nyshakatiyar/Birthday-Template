@@ -110,7 +110,7 @@ function Index() {
         <MemoryGallery onContinue={() => scrollToSection("video")} />
         <VideoSection onContinue={() => scrollToSection("notes")} />
         <LoveNoteExperience
-          isQuietSection={quietSection || activeSection === "video"}
+          isQuietSection={activeSection !== "notes"}
           onOpenLetter={() => scrollToSection("letter")}
         />
         <FinalLetter onContinue={() => scrollToSection("finale")} />

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { motion } from "motion/react";
 import { Volume2, VolumeX } from "lucide-react";
 import { birthdayConfig } from "@/content/birthday";
 

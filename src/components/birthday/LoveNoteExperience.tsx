@@ -29,7 +29,6 @@ export default function LoveNoteExperience({
   const [discovered, setDiscovered] = useState<string[]>([]);
   const [openNote, setOpenNote] = useState<LoveNote | null>(null);
   const [notification, setNotification] = useState<{ note: LoveNote; teaser: string } | null>(null);
-  const [heartsSpawn, setHeartsSpawn] = useState(0);
   const lastShownAt = useRef(0);
   const teaserIndex = useRef(0);
 
@@ -75,20 +74,12 @@ export default function LoveNoteExperience({
         return;
       }
       const note = pool[Math.floor(Math.random() * pool.length)];
+      if (!note) return;
       setOpenNote(note);
       if (!discovered.includes(note.id)) markDiscovered(note);
     },
     [discovered, markDiscovered, undiscovered],
   );
-
-  // Controlled automatic notifications: quiet sections, cooldown,
-  // no stacking, never the same note twice until exhausted.
-  useEffect(() => {
-    if (!notification && !openNote) {
-      window.dispatchEvent(new CustomEvent("birthday:love-note-shown", { detail: false }));
-    }
-    return undefined;
-  }, [notification, openNote]);
 
   useEffect(() => {
     window.dispatchEvent(new CustomEvent("birthday:love-note-shown", { detail: Boolean(notification || openNote) }));
@@ -96,7 +87,6 @@ export default function LoveNoteExperience({
 
   useEffect(() => {
     const interval = window.setInterval(() => {
-      if (!loveNotesSection) return;
       if (!loveNotes.length || !undiscovered.length) return;
       if (isQuietSection) return;
       if (openNote || notification) return;
@@ -108,6 +98,7 @@ export default function LoveNoteExperience({
       const note = undiscovered[Math.floor(Math.random() * undiscovered.length)];
       const teaser =
         notificationTeasers[teaserIndex.current % notificationTeasers.length];
+      if (!note || !teaser) return;
       teaserIndex.current += 1;
       setNotification({ note, teaser });
       window.setTimeout(() => {
@@ -189,7 +180,6 @@ export default function LoveNoteExperience({
             className="right-[14%] top-20"
             delay={1.4}
             onClick={() => pickAndOpen(true)}
-            key={`h1-${heartsSpawn}`}
           />
           <SecretEnvelope onClick={() => pickAndOpen(true)} />
           <motion.p
@@ -252,7 +242,7 @@ export default function LoveNoteExperience({
             <HeartIcon className="mt-0.5 h-4 w-4 shrink-0 text-rose-glow" />
             <span>
               <span className="block text-[10px] tracking-[0.2em] text-muted-foreground">
-                NEW DISCOVERY UNLOCKED
+                {notification.teaser.toUpperCase()}
               </span>
               <span className="mt-1 block text-sm leading-snug text-foreground">
                 {notification.note.title}

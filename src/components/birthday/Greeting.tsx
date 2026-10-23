@@ -87,7 +87,11 @@ function HeartAccent() {
     const t = (i / N) * Math.PI * 2;
     const x = 16 * Math.pow(Math.sin(t), 3);
     const y = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
-    pts.push({ x: x * 4.2, y: -y * 4.2, d: (i / N) * 2 });
+    pts.push({
+      x: Math.round(x * 4.2 * 100) / 100,
+      y: Math.round(-y * 4.2 * 100) / 100,
+      d: Math.round((i / N) * 2 * 1000) / 1000,
+    });
   }
   return (
     <motion.div
