@@ -74,6 +74,7 @@ export default function LoveNoteExperience({
         return;
       }
       const note = pool[Math.floor(Math.random() * pool.length)];
+      if (!note) return;
       setOpenNote(note);
       if (!discovered.includes(note.id)) markDiscovered(note);
     },
@@ -97,6 +98,7 @@ export default function LoveNoteExperience({
       const note = undiscovered[Math.floor(Math.random() * undiscovered.length)];
       const teaser =
         notificationTeasers[teaserIndex.current % notificationTeasers.length];
+      if (!note || !teaser) return;
       teaserIndex.current += 1;
       setNotification({ note, teaser });
       window.setTimeout(() => {
