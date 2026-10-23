@@ -241,7 +241,7 @@ export default function LoveNoteExperience({
             <HeartIcon className="mt-0.5 h-4 w-4 shrink-0 text-rose-glow" />
             <span>
               <span className="block text-[10px] tracking-[0.2em] text-muted-foreground">
-                NEW DISCOVERY UNLOCKED
+                {notification.teaser.toUpperCase()}
               </span>
               <span className="mt-1 block text-sm leading-snug text-foreground">
                 {notification.note.title}
