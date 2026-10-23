@@ -178,7 +178,6 @@ export default function LoveNoteExperience({
             className="right-[14%] top-20"
             delay={1.4}
             onClick={() => pickAndOpen(true)}
-            key={`h1-${heartsSpawn}`}
           />
           <SecretEnvelope onClick={() => pickAndOpen(true)} />
           <motion.p
