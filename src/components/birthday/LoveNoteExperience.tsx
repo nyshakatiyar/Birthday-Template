@@ -29,7 +29,6 @@ export default function LoveNoteExperience({
   const [discovered, setDiscovered] = useState<string[]>([]);
   const [openNote, setOpenNote] = useState<LoveNote | null>(null);
   const [notification, setNotification] = useState<{ note: LoveNote; teaser: string } | null>(null);
-  const [heartsSpawn, setHeartsSpawn] = useState(0);
   const lastShownAt = useRef(0);
   const teaserIndex = useRef(0);
 
@@ -81,22 +80,12 @@ export default function LoveNoteExperience({
     [discovered, markDiscovered, undiscovered],
   );
 
-  // Controlled automatic notifications: quiet sections, cooldown,
-  // no stacking, never the same note twice until exhausted.
-  useEffect(() => {
-    if (!notification && !openNote) {
-      window.dispatchEvent(new CustomEvent("birthday:love-note-shown", { detail: false }));
-    }
-    return undefined;
-  }, [notification, openNote]);
-
   useEffect(() => {
     window.dispatchEvent(new CustomEvent("birthday:love-note-shown", { detail: Boolean(notification || openNote) }));
   }, [notification, openNote]);
 
   useEffect(() => {
     const interval = window.setInterval(() => {
-      if (!loveNotesSection) return;
       if (!loveNotes.length || !undiscovered.length) return;
       if (isQuietSection) return;
       if (openNote || notification) return;
